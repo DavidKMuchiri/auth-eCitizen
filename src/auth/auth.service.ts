@@ -16,7 +16,7 @@ export class AuthService {
         }
     }
 
-    async getCode(client_id: string, response_type: string){
+    async getCode(client_id: string, response_type: string, redirect_url: string){
         const existingUser = await this.usersService.getUserByIdNumber(client_id);
 
         if(!existingUser){
@@ -30,11 +30,13 @@ export class AuthService {
             expiresIn: process.env.JWT_CODE_EXPIRATION,
         })
 
-        return {code: newToken}
+        let formattedURL = `${redirect_url}?code=${newToken}`                
+        return formattedURL;
     }
 
 
     async getAccessToken(body: any){
+        // console.log(body);
         if(!body.client_id || !body.client_secret || !body.grant_type || !body.code || !body.redirect_url){
             throw new HttpException("The request is missing a required paramter, include", HttpStatus.BAD_REQUEST);
         }
@@ -47,11 +49,12 @@ export class AuthService {
         const newToken = await this.jwtService.signAsync(token_payload, {
             expiresIn: process.env.JWT_TOKEN_EXPIRATION,
         })
-
-        return {
-            access_token: newToken,
-            token_type: "Bearer",
-            expires_in: process.env.JWT_TOKEN_EXPIRATION
-        }
+        // {
+        //     access_token: newToken,
+        //     token_type: "Bearer",
+        //     expires_in: process.env.JWT_TOKEN_EXPIRATION
+        // }
+        let formattedURL = `${body.redirect_url}?access_token=${newToken}`;
+        return formattedURL;
     }
 }
