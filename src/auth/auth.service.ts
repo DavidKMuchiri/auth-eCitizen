@@ -30,8 +30,9 @@ export class AuthService {
             expiresIn: process.env.JWT_CODE_EXPIRATION,
         })
 
-        // let formattedURL = `${redirect_url}?code=${newToken}`                
-        return {code: newToken};
+        // let formattedURL = `${redirect_url}?code=${newToken}`      
+        'code=123'          
+        return `code=${newToken}`;
     }
 
 
