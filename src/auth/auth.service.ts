@@ -30,9 +30,8 @@ export class AuthService {
             expiresIn: process.env.JWT_CODE_EXPIRATION,
         })
 
-        // let formattedURL = `${redirect_url}?code=${newToken}`      
-        'code=123'          
-        return `code=${newToken}`;
+        // let formattedURL = `${redirect_url}?code=${newToken}`                
+        return {code: newToken};
     }
 
 
@@ -50,12 +49,12 @@ export class AuthService {
         const newToken = await this.jwtService.signAsync(token_payload, {
             expiresIn: process.env.JWT_TOKEN_EXPIRATION,
         })
-        // {
-        //     access_token: newToken,
-        //     token_type: "Bearer",
-        //     expires_in: process.env.JWT_TOKEN_EXPIRATION
-        // }
-        let formattedURL = `${body.redirect_url}?access_token=${newToken}`;
-        return formattedURL;
+        
+        // let formattedURL = `${body.redirect_url}?access_token=${newToken}`;
+        return {
+            access_token: newToken,
+            token_type: "Bearer",
+            expires_in: process.env.JWT_TOKEN_EXPIRATION
+        };
     }
 }
