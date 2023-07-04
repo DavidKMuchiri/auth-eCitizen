@@ -16,6 +16,13 @@ export class UsersController {
         return newUser;
     }
 
+    @Get()
+    async getAllUsers(){
+        const allUsers = await this.usersService.getAllUsers();
+
+        return allUsers;
+    }
+
     @Get('info')
     async userInfo(@Query("access_token") access_token: string){
         const userInfo = await this.usersService.getUserInfo(access_token);
